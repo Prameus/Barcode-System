@@ -1,6 +1,7 @@
 import psycopg2
 import psycopg2.extras
 
+fields = ['id', 'product', 'carat', 'item']
 
 hostname = "localhost"
 database = "lira_gold"
@@ -23,7 +24,7 @@ try:
 
     class Database:
         def __init__(self):
-            cursor.execute('DROP TABLE IF EXISTS products')
+            #cursor.execute('DROP TABLE IF EXISTS products')
 
             create_script = """
                     CREATE TABLE IF NOT EXISTS products (
@@ -34,26 +35,34 @@ try:
                     )
                     """
             cursor.execute(create_script)
-            connect.commit()
 
         def adding_product(self):
-            value = input()
+            values_scripts = []
+            for i in fields:
+                value = str(input(f'Eklemek istediginiz urunun {i} yaziniz: '))
+                values_scripts.append(value)
+            insert_new_product = 'INSERT INTO products (id,product,carat,item) VALUES (%s,%s,%s,%s) '
+            print(values_scripts)
+            cursor.execute(insert_new_product, values_scripts)
 
+        def read_all_products(self):
+            products = []
+            cursor.execute('SELECT * FROM PRODUCTS')
+            for i in cursor.fetchall():
+               products.append(i)
+            print(products)
+            return products
+            
         def delete_product(self):
-            value = input('Silmek istediginiz urunun isimini giriniz: ')
-            delete_product = "DELETE FROM products WHERE = %s"
-
-            cursor.execute(delete_product, value)
-            connect.commit()
+            value = input('Silmek istediginiz urunun isimini giriniz: ',)
+            modified_value = str(f'{value}',)
+            delete_product = "DELETE FROM products WHERE id = %s"
+            print(modified_value)
+            cursor.execute(delete_product, modified_value)
 
     database = Database()
-    database.delete_product()
+    database.read_all_products()
 
+    connect.commit()
 except Exception as error:
     print(error)
-
-finally:
-    if connect is not None:
-        connect.close()
-    if cursor is not None:
-        cursor.close()
