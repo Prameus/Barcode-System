@@ -13,7 +13,7 @@ def barcode_reader():
     while True:
         success, img = cap.read()
         for barcode in decode(img):
-            print(barcode.data)
+            global myData
             myData = barcode.data.decode('utf-8')
             print(myData)
             pts = numpy.array([barcode.polygon], numpy.int32)
@@ -22,8 +22,10 @@ def barcode_reader():
             pts2 = barcode.rect
             cv2.putText(img, myData, (pts2[0], pts2[1]),
                         cv2.FONT_HERSHEY_COMPLEX, 0.9, (255, 0, 255), 2)
-
+            if myData is not None:
+                return myData
         cv2.imshow('result', img)
         cv2.waitKey(1)
+
 
 barcode_reader()

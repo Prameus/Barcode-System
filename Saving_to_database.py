@@ -1,7 +1,7 @@
 import psycopg2
 import psycopg2.extras
 
-fields = ['id', 'product', 'carat', 'item']
+fields = ['id', 'product', 'carat', 'barcode']
 
 hostname = "localhost"
 database = "lira_gold"
@@ -28,10 +28,10 @@ try:
 
             create_script = """
                     CREATE TABLE IF NOT EXISTS products (
-                        id  INT PRIMARY KEY,
-                        product    varchar(100),
-                        carat   int,
-                        item    int
+                        id          INT PRIMARY KEY,
+                        product     varchar(100),
+                        carat       int,
+                        barcode     int
                     )
                     """
             cursor.execute(create_script)
@@ -41,7 +41,7 @@ try:
             for i in fields:
                 value = str(input(f'Eklemek istediginiz urunun {i} yaziniz: '))
                 values_scripts.append(value)
-            insert_new_product = 'INSERT INTO products (id,product,carat,item) VALUES (%s,%s,%s,%s) '
+            insert_new_product = 'INSERT INTO products (id,product,carat,barcode) VALUES (%s,%s,%s,%s) '
             print(values_scripts)
             cursor.execute(insert_new_product, values_scripts)
 
