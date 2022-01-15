@@ -48,8 +48,8 @@ try:
         def read_all_products(self):
             products = []
             cursor.execute('SELECT * FROM PRODUCTS')
-            for i in cursor.fetchall():
-               products.append(i)
+            for record in cursor.fetchall():
+               products.append(record)
             print(products)
             return products
             
