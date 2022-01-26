@@ -12,5 +12,8 @@ conn.request("GET", "/economy/goldPrice", headers=headers)
 res = conn.getresponse()
 data = res.read()
 
-print(data[10])
 print(data.decode("utf-8"))
+
+transformed_data = data.decode("utf-8")
+new_data = data[0]
+print(new_data)
