@@ -67,5 +67,6 @@ try:
     database = Database()
     database.read_all_products()
     connect.commit()
+
 except Exception as error:
     print(error)
